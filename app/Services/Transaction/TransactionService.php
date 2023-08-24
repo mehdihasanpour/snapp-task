@@ -16,18 +16,12 @@ class TransactionService
             $sourceCard->decrement('balance', $amount + Wage::AMOUNT);
             $destinationCard->increment('balance', $amount);
 
-            $transaction = new Transaction([
-                'amount' => $amount,
-                'transaction_date' => now(),
-            ]);
+            $transaction = new Transaction(['amount' => $amount]);
             $transaction->sourceCard()->associate($sourceCard);
             $transaction->destinationCard()->associate($destinationCard);
             $transaction->save();
 
-            $wage = new Wage([
-                'wage_amount' => Wage::AMOUNT,
-                'wage_date' => now(),
-            ]);
+            $wage = new Wage(['wage_amount' => Wage::AMOUNT]);
             $wage->transaction()->associate($transaction);
             $wage->save();
 
