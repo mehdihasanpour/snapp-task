@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('account_id');
             $table->bigInteger('card_number')->unique();
+            $table->decimal('balance', 15, 2);
             $table->date('expiration_date');
             $table->string('cvv');
             $table->timestamps();
