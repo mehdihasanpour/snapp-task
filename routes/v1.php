@@ -1,11 +1,8 @@
 <?php
 
 use App\Http\Controllers\V1\TransactionController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\V1\TransactionReportController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::post('/transfer', [TransactionController::class, 'transferMoney'])->name('v1.transfer');
+Route::post('/transfer', TransactionController::class)->name('v1.transfer');
+Route::get('/top-users', TransactionReportController::class)->name('v1.top_users');
