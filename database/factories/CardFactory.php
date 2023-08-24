@@ -20,12 +20,4 @@ class CardFactory extends Factory
             'balance' => $this->faker->numberBetween(0, 10000000),
         ];
     }
-
-    protected function generateCardNumber()
-    {
-        $prefix = '603799';
-        $suffix = $this->faker->numberBetween(10000000, 99999999); // Generate an 8-digit suffix
-
-        return $prefix . $suffix;
-    }
 }
