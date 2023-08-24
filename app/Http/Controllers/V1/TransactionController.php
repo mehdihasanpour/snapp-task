@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\V1;
 
 use App\Models\Card;
-use App\Models\Transaction;
 use App\Models\Wage;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MoneyTransferRequest;
-use App\Jobs\SendSmsNotification;
 use App\Services\Transaction\TransactionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
