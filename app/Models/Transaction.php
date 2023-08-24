@@ -2,11 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
+    use HasFactory;
+
     protected $fillable = ['amount'];
+
+    public const MIN = 10000;
+    public const MAX = 500000000;
 
     public function sourceCard()
     {
