@@ -15,7 +15,7 @@ class AccountFactory extends Factory
         return [
             'user_id' => User::factory(),
             'account_number' => $this->faker->unique()->bankAccountNumber,
-            'current_balance' => $this->faker->numberBetween(1000, 1000000),
+            'current_balance' => $this->faker->numberBetween(1000, 1_000_000),
         ];
     }
 }

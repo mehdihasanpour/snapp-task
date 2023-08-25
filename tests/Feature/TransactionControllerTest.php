@@ -30,9 +30,9 @@ class TransactionControllerTest extends TestCase
         parent::setUp();
         Http::fake(['https://api.kavenegar.com/v1/*' => Http::response(['status' => 200, 'message' => 'successful'], 200)]);
         $this->sourceAccount = Account::factory()->create(['user_id' => $this->sourceUser = User::factory()->create()]);
-        $this->sourceCard = Card::factory()->create(['account_id' => $this->sourceAccount->id, 'balance' => 30000]);
+        $this->sourceCard = Card::factory()->create(['account_id' => $this->sourceAccount->id, 'balance' => 30_000]);
         $this->destinationAccount = Account::factory()->create(['user_id' => $this->destinationUser = User::factory()->create()]);
-        $this->destinationCard = Card::factory()->create(['account_id' => $this->destinationAccount->id, 'balance' => 50000]);
+        $this->destinationCard = Card::factory()->create(['account_id' => $this->destinationAccount->id, 'balance' => 50_000]);
     }
 
     /** @test */
@@ -43,7 +43,7 @@ class TransactionControllerTest extends TestCase
         $response = $this->postJson(route('v1.transfer'), [
             'source_card_number' => $this->sourceCard->card_number,
             'destination_card_number' => $this->destinationCard->card_number,
-            'amount' => $transferAmount = 10000
+            'amount' => $transferAmount = 10_000
         ]);
 
         $response->assertOk();
@@ -59,11 +59,11 @@ class TransactionControllerTest extends TestCase
         ]);
         $this->assertDatabaseHas('cards', [
             'account_id' => $this->sourceAccount->id,
-            'balance' => 30000 - ($transferAmount + Wage::AMOUNT),
+            'balance' => 30_000 - ($transferAmount + Wage::AMOUNT),
         ]);
         $this->assertDatabaseHas('cards', [
             'account_id' => $this->destinationCard->id,
-            'balance' => 50000 + $transferAmount,
+            'balance' => 50_000 + $transferAmount,
         ]);
         Queue::assertPushed(SendSmsNotification::class);
     }
@@ -76,7 +76,7 @@ class TransactionControllerTest extends TestCase
             [
                 'source_card_number' => $this->sourceCard->card_number,
                 'destination_card_number' => $this->destinationCard->card_number,
-                'amount' => 30000 + 1000,
+                'amount' => 30_000 + 1000,
             ],
         );
 
@@ -88,7 +88,7 @@ class TransactionControllerTest extends TestCase
     public function source_card_number_should_be_in_iranian_bank_format()
     {
         $sourceAccount = Account::factory()->create(['user_id' => $this->sourceUser = User::factory()->create()]);
-        $sourceCard = Card::factory()->create(['account_id' => $this->sourceAccount->id, 'balance' => 30000, 'card_number' => 2343453452234]);
+        $sourceCard = Card::factory()->create(['account_id' => $this->sourceAccount->id, 'balance' => 30_000, 'card_number' => 2343453452234]);
 
         $response = $this->postJson(
             route('v1.transfer'),
@@ -157,7 +157,7 @@ class TransactionControllerTest extends TestCase
             [
                 'source_card_number' => convert2arabic($this->sourceCard->card_number),
                 'destination_card_number' => $this->destinationCard->card_number,
-                'amount' => 10000,
+                'amount' => 10_000,
             ],
         );
 

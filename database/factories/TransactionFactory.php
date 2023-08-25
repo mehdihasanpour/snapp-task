@@ -12,7 +12,7 @@ class TransactionFactory extends Factory
         return [
             'source_card_id' => Card::factory(),
             'destination_card_id' => Card::factory(),
-            'amount' => $this->faker->numberBetween(1000, 10000),
+            'amount' => $this->faker->numberBetween(1000, 10_000),
         ];
     }
 }

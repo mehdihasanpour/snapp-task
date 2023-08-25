@@ -11,8 +11,8 @@ class Transaction extends Model
 
     protected $fillable = ['amount'];
 
-    public const MIN = 10000;
-    public const MAX = 500000000;
+    public const MIN = 10_000;
+    public const MAX = 500_000_000;
 
     public function sourceCard()
     {
