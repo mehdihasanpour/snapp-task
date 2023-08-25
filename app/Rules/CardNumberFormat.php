@@ -9,19 +9,18 @@ class CardNumberFormat implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $iranCardNumberRegex = [
+        $iranCardsNumberRegex = [
             '/^(603799)\d+$/',
             '/^(621986)\d+$/',
             '/^(589210)\d+$/',
         ];
 
-        $isValid = false;
-        foreach ($iranCardNumberRegex as $regex) {
+        foreach ($iranCardsNumberRegex as $regex) {
             if (preg_match($regex, $value)) {
-                $isValid = true;
+                return;
             }
         }
         
-        $isValid ?: $fail('The :attribute format is not supported by iranian banks.');
+        $fail('The :attribute format is not supported by iranian banks.');
     }
 }
