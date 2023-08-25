@@ -104,7 +104,7 @@ class TransactionControllerTest extends TestCase
         );
 
         $response->assertStatus(JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
-        $response->assertJson(['message' => 'The source card number is not valid']);
+        $response->assertJson(['message' => 'The source card number format is not supported by iranian banks.']);
     }
 
     /** @test */
