@@ -14,12 +14,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create()->each(function ($user) {
-            $user->accounts()->saveMany(Account::factory()->count(2)->make());
+        User::factory(2)->create()->each(function ($user) {
+            $user->accounts()->save(Account::factory()->make());
         });
         
         Account::all()->each(function ($account) {
-            $account->cards()->saveMany(Card::factory()->count(2)->make());
+            $account->cards()->saveMany(Card::factory()->count(2)->make(['balance'=>30000]));
         });
     }
 }
