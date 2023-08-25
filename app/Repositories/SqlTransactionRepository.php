@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class SqlTransactionRepository implements TransactionRepositoryInterface
 {
-    public function topTransactions(): JsonResponse
+    public function topUserWithTransactions(): JsonResponse
     {
         $topUser = DB::select("
             WITH TopUsers AS (
