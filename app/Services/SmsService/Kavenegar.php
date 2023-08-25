@@ -18,7 +18,10 @@ class Kavenegar implements SmsServiceInterface
             'message' => $message,
         ]);
 
-        $response->throw();
+        if(!$response->ok()){
+            $response->throw();
+            return false;
+        }
 
         return true;
     }
