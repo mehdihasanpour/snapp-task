@@ -7,6 +7,8 @@ use App\Models\Card;
 use App\Models\Transaction;
 use App\Models\Wage;
 use App\Jobs\SendSmsNotification;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class TransactionService
 {
@@ -25,13 +27,14 @@ class TransactionService
             $wage->transaction()->associate($transaction);
             $wage->save();
 
-            dispatch(new SendSmsNotification($sourceCard->account->user->phone, 'Your transaction has been processed.'));
-            dispatch(new SendSmsNotification($destinationCard->account->user->phone, 'You have received a transaction.'));
+            dispatch(new SendSmsNotification($sourceCard->account->user->phone, 'Your transaction has been processed.'))->afterCommit();
+            dispatch(new SendSmsNotification($destinationCard->account->user->phone, 'You have received a transaction.'))->afterCommit();
 
             DB::commit();
 
             return true;
         } catch (\Exception $e) {
+            Log::error('Transfer error: '.$e->getMessage());
             DB::rollback();
             return false;
         }
