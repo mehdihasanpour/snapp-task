@@ -21,4 +21,12 @@ class MoneyTransferRequest extends FormRequest
             'amount' => ['required','numeric','min:'.Transaction::MIN,'max:'.Transaction::MAX],
         ];
     }
+
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'source_card_number' => convert2english($this->input('source_card_number')),
+            'destination_card_number' => convert2english($this->input('destination_card_number')),
+        ]);
+    }
 }
