@@ -27,14 +27,14 @@ class TransactionService
             $wage->transaction()->associate($transaction);
             $wage->save();
 
-            dispatch(new SendSmsNotification($sourceCard->account->user->phone, 'Your transaction has been processed.'))->afterCommit();
-            dispatch(new SendSmsNotification($destinationCard->account->user->phone, 'You have received a transaction.'))->afterCommit();
+            dispatch(new SendSmsNotification($sourceCard->account->user->phone, __('messages.sms.source',['amount'=>$amount])))->afterCommit();
+            dispatch(new SendSmsNotification($destinationCard->account->user->phone,  __('messages.sms.destination',['amount'=>$amount])))->afterCommit();
 
             DB::commit();
 
             return true;
         } catch (\Exception $e) {
-            Log::error('Transfer error: '.$e->getMessage());
+            Log::error('Transfer error: ' . $e->getMessage());
             DB::rollback();
             return false;
         }
