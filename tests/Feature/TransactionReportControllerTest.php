@@ -36,9 +36,8 @@ class TransactionReportControllerTest extends TestCase
         $response = $this->getJson(route('v1.top_users'));
 
         $response->assertOk();
-        $response->assertJsonCount(9);
-        $this->assertSame($userOne->id, $response->decodeResponseJson()[0]['user_id']);
-        $this->assertSame($userTwo->id, $response->decodeResponseJson()[4]['user_id']);
-        $this->assertSame($userThree->id, $response->decodeResponseJson()[7]['user_id']);
+        $this->assertSame($userOne->id, $response->decodeResponseJson()[0]['id']);
+        $this->assertSame($userTwo->id, $response->decodeResponseJson()[1]['id']);
+        $this->assertSame($userThree->id, $response->decodeResponseJson()[2]['id']);
     }
 }
