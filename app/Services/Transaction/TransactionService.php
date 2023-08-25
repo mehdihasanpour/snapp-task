@@ -16,7 +16,9 @@ class TransactionService
     {
         try {
             $sourceCard->decrement('balance', $amount + Wage::AMOUNT);
+            $sourceCard->account->decrement('current_balance', $amount + Wage::AMOUNT);
             $destinationCard->increment('balance', $amount);
+            $destinationCard->account->increment('current_balance', $amount);
 
             $transaction = new Transaction(['amount' => $amount]);
             $transaction->sourceCard()->associate($sourceCard);

@@ -29,9 +29,9 @@ class TransactionControllerTest extends TestCase
     {
         parent::setUp();
         Http::fake(['https://api.kavenegar.com/v1/*' => Http::response(['status' => 200, 'message' => 'successful'], 200)]);
-        $this->sourceAccount = Account::factory()->create(['user_id' => $this->sourceUser = User::factory()->create()]);
+        $this->sourceAccount = Account::factory()->create(['user_id' => $this->sourceUser = User::factory()->create(),'current_balance'=>30_000]);
         $this->sourceCard = Card::factory()->create(['account_id' => $this->sourceAccount->id, 'balance' => 30_000]);
-        $this->destinationAccount = Account::factory()->create(['user_id' => $this->destinationUser = User::factory()->create()]);
+        $this->destinationAccount = Account::factory()->create(['user_id' => $this->destinationUser = User::factory()->create(),'current_balance'=>50_000]);
         $this->destinationCard = Card::factory()->create(['account_id' => $this->destinationAccount->id, 'balance' => 50_000]);
     }
 
@@ -61,9 +61,17 @@ class TransactionControllerTest extends TestCase
             'account_id' => $this->sourceAccount->id,
             'balance' => 30_000 - ($transferAmount + Wage::AMOUNT),
         ]);
+        $this->assertDatabaseHas('accounts', [
+            'id' => $this->sourceAccount->id,
+            'current_balance' => 30_000 - ($transferAmount + Wage::AMOUNT),
+        ]);
         $this->assertDatabaseHas('cards', [
             'account_id' => $this->destinationCard->id,
             'balance' => 50_000 + $transferAmount,
+        ]);
+        $this->assertDatabaseHas('accounts', [
+            'id' => $this->destinationAccount->id,
+            'current_balance' => 50_000 + $transferAmount,
         ]);
         Queue::assertPushed(SendSmsNotification::class);
     }
