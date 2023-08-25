@@ -15,4 +15,13 @@ class Wage extends Model
     {
         return $this->belongsTo(Transaction::class, 'transaction_id');
     }
+
+    public static function add(Transaction $transaction): self
+    {
+        $wage = new self(['wage_amount' => self::AMOUNT]);
+        $wage->transaction()->associate($transaction);
+        $wage->save();
+
+        return $wage;
+    }
 }

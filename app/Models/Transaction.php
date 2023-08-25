@@ -24,4 +24,14 @@ class Transaction extends Model
     {
         return $this->belongsTo(Card::class, 'destination_card_id');
     }
+
+    public static function add(Card $sourceCard, Card $destinationCard, int $amount): self
+    {
+        $transaction = new self(['amount' => $amount]);
+        $transaction->sourceCard()->associate($sourceCard);
+        $transaction->destinationCard()->associate($destinationCard);
+        $transaction->save();
+
+        return $transaction;
+    }
 }

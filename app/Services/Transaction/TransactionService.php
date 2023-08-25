@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 
 class TransactionService
 {
-    public function transferMoney(string $sourceCardNumber, string $destinationCardNumber, $amount)
+    public function transferMoney(string $sourceCardNumber, string $destinationCardNumber, int $amount)
     {
         DB::beginTransaction();
 
@@ -29,14 +29,8 @@ class TransactionService
             $destinationCard->increment('balance', $amount);
             $destinationCard->account->increment('current_balance', $amount);
 
-            $transaction = new Transaction(['amount' => $amount]);
-            $transaction->sourceCard()->associate($sourceCard);
-            $transaction->destinationCard()->associate($destinationCard);
-            $transaction->save();
-
-            $wage = new Wage(['wage_amount' => Wage::AMOUNT]);
-            $wage->transaction()->associate($transaction);
-            $wage->save();
+            $transaction = Transaction::add($sourceCard, $destinationCard, $amount);
+            Wage::add($transaction);
 
             dispatch(new SendSms($sourceCard->account->user->phone, __('messages.sms.source', ['amount' => $amount])))->afterCommit();
             dispatch(new SendSms($destinationCard->account->user->phone,  __('messages.sms.destination', ['amount' => $amount])))->afterCommit();
