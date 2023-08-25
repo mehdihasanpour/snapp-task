@@ -13,13 +13,13 @@ class SendSms implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(private string $recipient, private string $message)
+    public function __construct(private string $recipient, private string $message, private SmsServiceInterface $smsService)
     {
         $this->onQueue('transfer');
     }
 
-    public function handle(SmsServiceInterface $smsService): void
+    public function handle(): void
     {
-        $smsService->sendSms($this->recipient, $this->message);
+        $this->smsService->sendSms($this->recipient, $this->message);
     }
 }

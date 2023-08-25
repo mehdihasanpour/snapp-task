@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Card;
 use App\Models\Transaction;
 use App\Models\Wage;
+use App\Services\SmsService\Kavenegar;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
@@ -31,9 +32,10 @@ class TransactionService
 
             $transaction = Transaction::add($sourceCard, $destinationCard, $amount);
             Wage::add($transaction);
-
-            dispatch(new SendSms($sourceCard->account->user->phone, __('messages.sms.source', ['amount' => $amount])))->afterCommit();
-            dispatch(new SendSms($destinationCard->account->user->phone,  __('messages.sms.destination', ['amount' => $amount])))->afterCommit();
+            
+            $smsClient = new Kavenegar(config('services.kavenegar.key'));
+            dispatch(new SendSms($sourceCard->account->user->phone, __('messages.sms.source', ['amount' => $amount]), $smsClient ))->afterCommit();
+            dispatch(new SendSms($destinationCard->account->user->phone,  __('messages.sms.destination', ['amount' => $amount]), $smsClient))->afterCommit();
 
             DB::commit();
 
