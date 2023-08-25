@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Jobs\SendSmsNotification;
+use App\Jobs\SendSms;
 use App\Models\Account;
 use App\Models\Card;
 use App\Models\Transaction;
@@ -73,7 +73,7 @@ class TransactionControllerTest extends TestCase
             'id' => $this->destinationAccount->id,
             'current_balance' => 50_000 + $transferAmount,
         ]);
-        Queue::assertPushed(SendSmsNotification::class);
+        Queue::assertPushed(SendSms::class);
     }
 
     /** @test */

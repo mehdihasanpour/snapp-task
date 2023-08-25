@@ -2,12 +2,11 @@
 
 namespace App\Services\Transaction;
 
+use App\Jobs\SendSms;
 use Illuminate\Support\Facades\DB;
 use App\Models\Card;
 use App\Models\Transaction;
 use App\Models\Wage;
-use App\Jobs\SendSmsNotification;
-use Exception;
 use Illuminate\Support\Facades\Log;
 
 class TransactionService
@@ -29,8 +28,8 @@ class TransactionService
             $wage->transaction()->associate($transaction);
             $wage->save();
 
-            dispatch(new SendSmsNotification($sourceCard->account->user->phone, __('messages.sms.source',['amount'=>$amount])))->afterCommit();
-            dispatch(new SendSmsNotification($destinationCard->account->user->phone,  __('messages.sms.destination',['amount'=>$amount])))->afterCommit();
+            dispatch(new SendSms($sourceCard->account->user->phone, __('messages.sms.source',['amount'=>$amount])))->afterCommit();
+            dispatch(new SendSms($destinationCard->account->user->phone,  __('messages.sms.destination',['amount'=>$amount])))->afterCommit();
 
             DB::commit();
 
