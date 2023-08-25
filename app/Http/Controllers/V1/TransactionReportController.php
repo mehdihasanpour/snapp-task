@@ -13,6 +13,6 @@ class TransactionReportController extends Controller
 
     public function __invoke()
     {
-        return $this->transactionRepository->topTransactions();
+        return $this->transactionRepository->topUserWithTransactions();
     }
 }

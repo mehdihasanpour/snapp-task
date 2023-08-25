@@ -6,5 +6,5 @@ use Illuminate\Http\JsonResponse;
 
 interface TransactionRepositoryInterface
 {
-    public function topTransactions(): JsonResponse;
+    public function topUserWithTransactions(): JsonResponse;
 }
