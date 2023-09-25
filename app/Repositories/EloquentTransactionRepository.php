@@ -34,10 +34,10 @@ class EloquentTransactionRepository implements TransactionRepositoryInterface
                 },
                 'accounts.cards.destinationTransactions' => function ($query) {
                     $query->orderBy('created_at', 'desc')->limit(10);
-                }
+                },
             ])
             ->get();
-            
+
         return response()->json($usersWithTransactions);
     }
 }

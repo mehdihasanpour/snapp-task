@@ -19,19 +19,24 @@ class TransactionControllerTest extends TestCase
     use LazilyRefreshDatabase;
 
     public $sourceAccount;
+
     public $sourceCard;
+
     public $destinationAccount;
+
     public $destinationCard;
+
     public $sourceUser;
+
     public $destinationUser;
 
     public function setUp(): void
     {
         parent::setUp();
         Http::fake(['https://api.kavenegar.com/v1/*' => Http::response(['status' => 200, 'message' => 'successful'], 200)]);
-        $this->sourceAccount = Account::factory()->create(['user_id' => $this->sourceUser = User::factory()->create(),'current_balance'=>30_000]);
+        $this->sourceAccount = Account::factory()->create(['user_id' => $this->sourceUser = User::factory()->create(), 'current_balance' => 30_000]);
         $this->sourceCard = Card::factory()->create(['account_id' => $this->sourceAccount->id, 'balance' => 30_000]);
-        $this->destinationAccount = Account::factory()->create(['user_id' => $this->destinationUser = User::factory()->create(),'current_balance'=>50_000]);
+        $this->destinationAccount = Account::factory()->create(['user_id' => $this->destinationUser = User::factory()->create(), 'current_balance' => 50_000]);
         $this->destinationCard = Card::factory()->create(['account_id' => $this->destinationAccount->id, 'balance' => 50_000]);
     }
 
@@ -43,7 +48,7 @@ class TransactionControllerTest extends TestCase
         $response = $this->postJson(route('v1.transfer'), [
             'source_card_number' => $this->sourceCard->card_number,
             'destination_card_number' => $this->destinationCard->card_number,
-            'amount' => $transferAmount = 10_000
+            'amount' => $transferAmount = 10_000,
         ]);
 
         $response->assertOk();
@@ -126,7 +131,7 @@ class TransactionControllerTest extends TestCase
         $response->assertStatus(JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJson(['message' => 'The selected destination card number is invalid.']);
     }
-    
+
     /** @test */
     public function max_amount_for_transfer()
     {

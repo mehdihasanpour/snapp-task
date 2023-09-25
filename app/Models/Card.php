@@ -20,11 +20,11 @@ class Card extends Model
 
     public function sourceTransactions(): HasMany
     {
-        return $this->hasMany(Transaction::class,'source_card_id');
+        return $this->hasMany(Transaction::class, 'source_card_id');
     }
 
     public function destinationTransactions(): HasMany
     {
-        return $this->hasMany(Transaction::class,'destination_card_id');
+        return $this->hasMany(Transaction::class, 'destination_card_id');
     }
 }

@@ -3,12 +3,12 @@
 namespace App\Services\Transaction;
 
 use App\Jobs\SendSms;
-use Illuminate\Support\Facades\DB;
 use App\Models\Card;
 use App\Models\Transaction;
 use App\Models\Wage;
 use App\Services\SmsService\SmsServiceInterface;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class TransactionService
@@ -32,17 +32,18 @@ class TransactionService
 
             $transaction = Transaction::add($sourceCard, $destinationCard, $amount);
             Wage::add($transaction);
-            
+
             $smsClient = app(SmsServiceInterface::class);
-            dispatch(new SendSms($sourceCard->account->user->phone, __('messages.sms.source', ['amount' => $amount]), $smsClient ))->afterCommit();
-            dispatch(new SendSms($destinationCard->account->user->phone,  __('messages.sms.destination', ['amount' => $amount]), $smsClient))->afterCommit();
+            dispatch(new SendSms($sourceCard->account->user->phone, __('messages.sms.source', ['amount' => $amount]), $smsClient))->afterCommit();
+            dispatch(new SendSms($destinationCard->account->user->phone, __('messages.sms.destination', ['amount' => $amount]), $smsClient))->afterCommit();
 
             DB::commit();
 
             return ['message' => __('messages.transfer.success'), 'status' => JsonResponse::HTTP_OK];
         } catch (\Exception $e) {
-            Log::error('Transfer error: ' . $e->getMessage());
+            Log::error('Transfer error: '.$e->getMessage());
             DB::rollback();
+
             return ['message' => __('messages.transfer.fail'), 'status' => JsonResponse::HTTP_INTERNAL_SERVER_ERROR];
         }
     }

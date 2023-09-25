@@ -18,7 +18,7 @@ class MoneyTransferRequest extends FormRequest
         return [
             'source_card_number' => ['required', 'numeric', 'exists:cards,card_number', new CardNumberFormat],
             'destination_card_number' => ['required', 'numeric', 'exists:cards,card_number', new CardNumberFormat],
-            'amount' => ['required','numeric','min:'.Transaction::MIN,'max:'.Transaction::MAX],
+            'amount' => ['required', 'numeric', 'min:'.Transaction::MIN, 'max:'.Transaction::MAX],
         ];
     }
 

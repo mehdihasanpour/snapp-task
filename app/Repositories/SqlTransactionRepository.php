@@ -10,7 +10,7 @@ class SqlTransactionRepository implements TransactionRepositoryInterface
 {
     public function topUserWithTransactions(): JsonResponse
     {
-        $topUser = DB::select("
+        $topUser = DB::select('
             WITH TopUsers AS (
                 SELECT
                     users.id AS user_id,
@@ -49,7 +49,7 @@ class SqlTransactionRepository implements TransactionRepositoryInterface
             ORDER BY
                 top_users.transaction_count DESC, transactions.created_at DESC
             LIMIT 30;
-        ");
+        ');
 
         return response()->json($topUser);
     }

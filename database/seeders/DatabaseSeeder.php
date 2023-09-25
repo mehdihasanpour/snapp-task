@@ -14,15 +14,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $sourceUser = User::factory()->create(['phone'=>'9149383467', 'name'=>'mehdi']); 
-        $destinationUser = User::factory()->create(['phone'=>'9909856567', 'name'=>'reza']); 
+        $sourceUser = User::factory()->create(['phone' => '9149383467', 'name' => 'mehdi']);
+        $destinationUser = User::factory()->create(['phone' => '9909856567', 'name' => 'reza']);
 
         User::All()->each(function ($user) {
             $user->accounts()->save(Account::factory()->make());
         });
-        
+
         Account::all()->each(function ($account) {
-            $account->cards()->saveMany(Card::factory()->count(2)->make(['balance'=>300000]));
+            $account->cards()->saveMany(Card::factory()->count(2)->make(['balance' => 300000]));
         });
     }
 }

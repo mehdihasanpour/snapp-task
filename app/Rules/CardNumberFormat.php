@@ -20,7 +20,7 @@ class CardNumberFormat implements ValidationRule
                 return;
             }
         }
-        
+
         $fail('The :attribute format is not supported by iranian banks.');
     }
 }

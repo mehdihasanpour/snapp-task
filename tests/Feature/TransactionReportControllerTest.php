@@ -24,14 +24,14 @@ class TransactionReportControllerTest extends TestCase
 
         $accountThree = Account::factory()->create(['user_id' => $userThree = User::factory()->create()]);
         $cardThree = Card::factory()->create(['account_id' => $accountThree->id, 'balance' => 30_000]);
-        
+
         $accountFour = Account::factory()->create(['user_id' => $userFour = User::factory()->create()]);
         $cardFour = Card::factory()->create(['account_id' => $accountFour->id, 'balance' => 30_000]);
 
-        $userOneTransactions = Transaction::factory()->count(4)->create(['source_card_id'=>$cardOne->id]);
-        $userTwoTransactions = Transaction::factory()->count(3)->create(['source_card_id'=>$cardTwo->id]);
-        $userThreeTransactions = Transaction::factory()->count(2)->create(['source_card_id'=>$cardThree->id]);
-        $userFourTransactions = Transaction::factory()->create(['source_card_id'=>$cardFour->id]);
+        $userOneTransactions = Transaction::factory()->count(4)->create(['source_card_id' => $cardOne->id]);
+        $userTwoTransactions = Transaction::factory()->count(3)->create(['source_card_id' => $cardTwo->id]);
+        $userThreeTransactions = Transaction::factory()->count(2)->create(['source_card_id' => $cardThree->id]);
+        $userFourTransactions = Transaction::factory()->create(['source_card_id' => $cardFour->id]);
 
         $response = $this->getJson(route('v1.top_users'));
 
